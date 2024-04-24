@@ -1,0 +1,202 @@
+---
+title: "Bayesian Statistics & Probabilistic Programming: Example Billards"
+output: html_notebook
+---
+
+# Example Billards
+
+Imagine we have a one dimensional billiard:
+
+```{r}
+A<-1.1
+B<-0.25
+old.par<-par(usr=c(-A,A,-B,B))
+options(repr.plot.width=16,repr.plot.height=3)
+plot.new()
+plot.window(xlim=c(-A,A),ylim=c(-B,B),bty="o")
+bg<-"LightCyan"
+axis(1,pos=0,lwd=1.5,at=c(-1,1),labels=c("0","1"),col.lab="blue",cex.lab=2,tick=FALSE,
+     col.axis=bg,cex.axis=1,las=1)
+Lx<-c(-1,1)
+Ly<-c(0,0)
+lines(Lx,Ly,lwd=8,col="blue")
+points(Lx,Ly,pch=19,cex=3,col="blue")
+text(Lx,c(-0.2,-0.2),c("0","1"),col="blue",cex=2)
+par(old.par)
+```
+
+Imagine that we define a position with value p between (0,1). If the billiard falls to the left of it, then Alice wins a point. Otherwise, Bob wins a point.
+
+```{r}
+A<-1.1
+B<-0.25
+old.par<-par(usr=c(-A,A,-B,B))
+options(repr.plot.width=16,repr.plot.height=3)
+plot.new()
+plot.window(xlim=c(-A,A),ylim=c(-B,B),bty="o")
+bg<-"white"
+axis(1,pos=0,lwd=1.5,at=c(-1,1),labels=c("0","1"),col.lab="blue",cex.lab=2,tick=FALSE,
+     col.axis=bg,cex.axis=1,las=1)
+Lx<-c(-1,1)
+Ly<-c(0,0)
+lines(Lx,Ly,lwd=8,col="blue")
+points(Lx,Ly,pch=19,cex=3,col="blue")
+text(Lx,c(-0.2,-0.2),c("0","1"),col="blue",cex=2)
+x.cue<--1+2*0.65
+points(x.cue,0,pch=16,col="red",cex=6)
+text(x.cue,-0.2,c("p"),col="red",cex=2)
+par(old.par)
+```
+
+```{r}
+# Game rules: first to attain W points wins
+W<-6
+
+# Initialization
+set.seed(24025)   # some arbitrary seed - for the sake of reproducibility
+```
+
+```{r}
+A<-1.1
+B<-0.25
+old.par<-par(usr=c(-A,A,-B,B))
+options(repr.plot.width=16,repr.plot.height=3)
+plot.new()
+plot.window(xlim=c(-A,A),ylim=c(-B,B),bty="o")
+bg<-"white"
+axis(1,pos=0,lwd=1.5,at=c(-1,1),labels=c("0","1"),col.lab="blue",cex.lab=2,tick=FALSE,
+     col.axis=bg,cex.axis=1,las=1)
+Lx<-c(-1,1)
+Ly<-c(0,0)
+lines(Lx,Ly,lwd=8,col="blue")
+points(Lx,Ly,pch=19,cex=3,col="blue")
+text(Lx,c(-0.2,-0.2),c("0","1"),col="blue",cex=2)
+x.cue<--1+2*0.65
+points(x.cue,0,pch=16,col="red",cex=6)
+text(x.cue,-0.2,c("p"),col="red",cex=2)
+x<--1+2*runif(1)
+points(x,0,pch=16,col="black",cex=6)
+par(old.par)
+```
+
+```{r}
+A<-1.1
+B<-0.25
+old.par<-par(usr=c(-A,A,-B,B))
+options(repr.plot.width=16,repr.plot.height=3)
+plot.new()
+plot.window(xlim=c(-A,A),ylim=c(-B,B),bty="o")
+bg<-"white"
+axis(1,pos=0,lwd=1.5,at=c(-1,1),labels=c("0","1"),col.lab="blue",cex.lab=2,tick=FALSE,
+     col.axis=bg,cex.axis=1,las=1)
+Lx<-c(-1,1)
+Ly<-c(0,0)
+lines(Lx,Ly,lwd=8,col="blue")
+points(Lx,Ly,pch=19,cex=3,col="blue")
+text(Lx,c(-0.2,-0.2),c("0","1"),col="blue",cex=2)
+x.cue<--1+2*0.65
+points(x.cue,0,pch=16,col="red",cex=6)
+text(x.cue,-0.2,c("p"),col="red",cex=2)
+x<--1+2*runif(1)
+points(x,0,pch=16,col="black",cex=6)
+par(old.par)
+```
+
+```{r}
+A<-1.1
+B<-0.25
+old.par<-par(usr=c(-A,A,-B,B))
+options(repr.plot.width=16,repr.plot.height=3)
+plot.new()
+plot.window(xlim=c(-A,A),ylim=c(-B,B),bty="o")
+bg<-"white"
+axis(1,pos=0,lwd=1.5,at=c(-1,1),labels=c("0","1"),col.lab="blue",cex.lab=2,tick=FALSE,
+     col.axis=bg,cex.axis=1,las=1)
+Lx<-c(-1,1)
+Ly<-c(0,0)
+lines(Lx,Ly,lwd=8,col="blue")
+points(Lx,Ly,pch=19,cex=3,col="blue")
+text(Lx,c(-0.2,-0.2),c("0","1"),col="blue",cex=2)
+x.cue<--1+2*0.65
+points(x.cue,0,pch=16,col="red",cex=6)
+text(x.cue,-0.2,c("p"),col="red",cex=2)
+x<--1+2*runif(1)
+points(x,0,pch=16,col="black",cex=6)
+par(old.par)
+```
+
+## Simulation
+
+Assume $n=8$ throws done, $a=5$ to the left, $b=3$ to the right of the cue ball.
+
+```{r}
+#number of throws so far, number of points for A so far, same for B
+n<-8
+a<-5
+b<-n-a
+```
+
+Simulate $N$ games with the same $n=8$. Throw cue ball $N$ times, each time with a different $p$, uniformly chosen from the $(0,1)$ interval. For each p, an $n$-throws game is played. $ap$ (vector) is the register of Alice's points in each game
+
+```{r}
+N<-100000
+p<-runif(N)
+ap<-rbinom(N,size=n,prob=p)
+```
+
+```{r}
+T<-table(ap)
+T
+```
+
+Filter the set of games, selecting those for which Alice's score is 'a', the actually observed value (for each of them Bob's score is b = n - a). Keep the values of p for these games. Then we study the distribution of this quantity.
+
+```{r}
+p.post<-p[ap==a]
+n.post<-length(p.post)
+str(p.post)
+```
+
+Now, for just these games we play the remaining $W-b$ rounds, checking whether Bob wins. This happens only if Bob wins all $W-b$ rounds.
+
+```{r}
+F.result<-rbinom(n.post,size=W-b,prob=1-p.post)       # number of points for Bob 
+B.wins<-(F.result==(W-b))
+Freq.Bob.wins<-sum(B.wins)/n.post
+round(Freq.Bob.wins,3)
+```
+
+This result is close to the theoretically derived $P_{BAYES}(\text{Bob wins})$.
+
+```{r}
+# Store as a data.frame, for plotting
+p.post.df<-data.frame(p.post)
+str(p.post.df)
+```
+
+```{r}
+require(MASS,quietly=TRUE)
+require(ggplot2,quietly=TRUE)
+```
+
+```{r}
+options(repr.plot.width=7,repr.plot.height=7)
+h<-hist(p.post,freq=FALSE,col="LightGreen")
+p.post.density<-density(p.post)
+str(p.post.density)
+```
+
+```{r}
+p.post.MAP<-p.post.density$x[which.max(p.post.density$y)]
+round(p.post.MAP,3)
+round(a/n,3)
+fractions(p.post.MAP)
+```
+
+```{r}
+options(repr.plot.width=7,repr.plot.height=7)
+plot.01<-ggplot(p.post.df, aes(x=p.post))+geom_histogram(aes(y=after_stat(density)),binwidth=0.04,color="blue",fill="LightGreen")+
+    geom_density(alpha=.4, color="DarkGreen",fill="gray",linewidth=1.1)
+
+plot.01+geom_vline(aes(xintercept=p.post.MAP),color="red", linewidth=1.1)
+```
